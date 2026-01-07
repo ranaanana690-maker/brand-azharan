@@ -1,1 +1,439 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وثيقة الهوية التجارية</title>
+    <!-- تحميل Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- تحميل خط Inter كخط افتراضي -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* تعريف الخط الأساسي مع دعم أفضل للغة العربية */
+        body {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+            background-color: #f7f9fb; /* خلفية هادئة جداً - أساس التصميم الاحترافي */
+            color: #1f2937; 
+            line-height: 1.6; /* تحسين قراءة النص */
+        }
 
+        /* تحسين مظهر الحقول النصية لتكون أنيقة ومسطحة قليلاً */
+        .input-field, .textarea-field, .input-field-sm, .textarea-field-sm {
+            @apply w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800 transition duration-200 text-right focus:ring-2 focus:ring-indigo-400 focus:border-transparent shadow-inner-sm; /* استخدام حلقة تركيز أنيقة */
+        }
+        .textarea-field-sm {
+            @apply text-sm p-2; 
+        }
+
+        /* تعريف ظل داخلي خفيف جداً للحقول ليعطي عمقًا احترافيًا */
+        .shadow-inner-sm {
+            box-shadow: inset 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+        
+        /* إخفاء شريط التمرير في Firefox/IE/Edge (جمالية) */
+        body {
+          scrollbar-width: none;
+        }
+        /* إخفاء شريط التمرير في Chrome/Safari */
+        body::-webkit-scrollbar {
+          display: none;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- زر التصدير العائم (TXT) - تم وضعه في الوسط وجعله الخيار الوحيد -->
+    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+        <!-- الزر الوحيد: التصدير النصي (.txt) بلون Indigo قوي -->
+        <button id="downloadText"
+            class="w-72 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-xl transition duration-300 transform hover:scale-[1.05] ring-4 ring-indigo-300 flex items-center justify-center space-x-2 rtl:space-x-reverse">
+            <!-- أيقونة نص SVG بسيطة -->
+            <svg class="w-6 h-6 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <line x1="10" y1="9" x2="8" y2="9"></line>
+            </svg>
+            <span>تصدير كوثيقة نصية (.txt)</span>
+        </button>
+    </div>
+
+    <!-- حاوية المحتوى الرئيسي -->
+    <div id="pdf-content" class="max-w-4xl mx-auto bg-white p-6 md:p-12 rounded-3xl shadow-2xl space-y-12 transition-shadow duration-500 mb-20">
+
+        <!-- العنوان، اسم المُعد والوصف -->
+        <header class="text-center pb-8 border-b border-gray-100">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2 tracking-tight">وثيقة توثيق الهوية</h1>
+            <h2 class="text-xl md:text-2xl font-light text-gray-600">مذكرة عمل البراندينج التطبيقية</h2>
+            <!-- إضافة اسم المُعد -->
+            <p class="text-gray-500 mt-2 text-sm font-medium">إعداد واجتهاد: بثلجة عبد الفتاح</p>
+            <p class="text-gray-500 mt-4 max-w-2xl mx-auto text-base">املأ الفراغات لتأسيس وتوثيق نواة هويتك التجارية. **البيانات محفوظة على جهازك محليًا.**</p>
+        </header>
+
+        <!-- معلومات المشروع الأساسية -->
+        <section class="content-container" data-section-title="معلومات المشروع الأساسية">
+            <h3 class="text-3xl font-bold text-gray-800 mb-8 pb-3 border-b border-gray-200">معلومات المشروع الأساسية</h3>
+            <div class="space-y-6">
+                <div class="flex flex-col">
+                    <label class="text-gray-600 font-medium mb-1">1. اسم البراند</label>
+                    <input type="text" placeholder="مثال: متجر الأنيق" class="input-field">
+                </div>
+                <div class="flex flex-col">
+                    <label class="text-gray-600 font-medium mb-1">2. صناعة البراند/القطاع</label>
+                    <input type="text" placeholder="مثال: التجارة الإلكترونية للملابس الرجالية" class="input-field">
+                </div>
+                <div class="flex flex-col">
+                    <label class="text-gray-600 font-medium mb-1">3. تاريخ التأسيس (أو التخطيط)</label>
+                    <input type="date" class="input-field">
+                </div>
+            </div>
+        </section>
+
+        <!-- الفصل الأول: ابدأ بنواة البراند (الـ "لماذا؟") -->
+        <section class="content-container" data-section-title="الفصل الأول: ابدأ بنواة البراند (الـ 'لماذا؟' الهدف الداخلي)">
+            <h3 class="section-title">الفصل الأول: ابدأ بنواة البراند (الـ "لماذا؟" الهدف الداخلي)</h3>
+
+            <!-- المهمة 1.1: رسالة البراند (Brand Mission) -->
+            <div class="task-box">
+                <h4 class="task-title">1.1 رسالة البراند (Brand Mission)</h4>
+                <p class="task-description">**الهدف:** تحدد العمل اليومي للبراند. الصيغة: نحن نساعد [الجمهور] في [الاحتياج] من خلال [ما تقدمه]، وذلك لـ [التأثير النهائي].</p>
+                <textarea rows="3" placeholder="الإجابة: نحن نساعد المهنيين المشغولين في إنجاز وجبات صحية سريعة التحضير من خلال خدمات التوصيل المبرمجة، وذلك لتمكينهم من التركيز على إنتاجيتهم." class="textarea-field"></textarea>
+            </div>
+
+            <!-- المهمة 1.2: رؤية البراند (Brand Vision) -->
+            <div class="task-box">
+                <h4 class="task-title">1.2 رؤية البراند (Brand Vision)</h4>
+                <p class="task-description">**الهدف:** تحدد الطموح المستقبلي والغاية القصوى للبراند بعد 5-10 سنوات. (كيف سيبدو العالم بوجودك؟)</p>
+                <textarea rows="2" placeholder="الإجابة: أن نكون المنصة العالمية الرائدة لتسهيل التعليم عن بعد في الشرق الأوسط بحلول عام 2030." class="textarea-field"></textarea>
+            </div>
+
+            <!-- المهمة 1.3: قيم البراند الأساسية (Brand Values) -->
+            <div class="task-box">
+                <h4 class="task-title">1.3 قيم البراند الأساسية (Brand Values)</h4>
+                <p class="task-description">**الهدف:** تحدد المبادئ التي تحكم كل قرار تتخذه، داخلياً وخارجياً. (اختر 3-5 قيم)</p>
+                <div class="space-y-2">
+                    <input type="text" placeholder="1. القيمة الأولى (مثال: الشفافية في الأسعار)" class="input-field-sm">
+                    <input type="text" placeholder="2. القيمة الثانية (مثال: الابتكار المستمر في المنتج)" class="input-field-sm">
+                    <input type="text" placeholder="3. القيمة الثالثة (مثال: خدمة العميل أولاً)" class="input-field-sm">
+                </div>
+            </div>
+        </section>
+
+        <!-- الفصل الثاني: الاستراتيجية مخ البراند -->
+        <section class="content-container" data-section-title="الفصل الثاني: الاستراتيجية مخ البراند (الـ 'لمن؟' والـ 'أين؟')">
+            <h3 class="section-title">الفصل الثاني: الاستراتيجية مخ البراند (الـ "لمن؟" والـ "أين؟")</h3>
+
+            <!-- المهمة 2.1: استهداف البراند (Targeting) -->
+            <div class="task-box">
+                <h4 class="task-title">2.1 استهداف البراند (Targeting)</h4>
+                <p class="task-description">**الهدف:** تحديد العميل المثالي (Persona) الذي سيوجه كل جهود التسويق.</p>
+                <div class="space-y-3">
+                    <input type="text" placeholder="الاسم المستعار للعميل المثالي (مثال: سارة، المهنية المشغولة)" class="input-field-sm">
+                    <input type="text" placeholder="التركيبة السكانية (العمر، الجنس، الموقع، الدخل)" class="input-field-sm">
+                    <textarea rows="2" placeholder="علم النفس (التحديات الرئيسية، الطموحات، السلوك الشرائي)" class="textarea-field"></textarea>
+                    <input type="text" placeholder="أكبر مشكلة يحلها البراند لهؤلاء (جملة واحدة)" class="input-field-sm">
+                </div>
+            </div>
+
+            <!-- المهمة 2.2: بناء الموقع الذهني (Positioning) -->
+            <div class="task-box">
+                <h4 class="task-title">2.2 بناء الموقع الذهني (Positioning)</h4>
+                <p class="task-description">**الهدف:** صياغة عرض القيمة الفريدة (UVP) لتبرز الاختلاف عن المنافسين.</p>
+                <input type="text" placeholder="المنافسون الأساسيون (اذكر 3)" class="input-field-sm">
+                <p class="task-description mt-3">عرض القيمة الفريدة (UVP): أنا البراند الوحيد الذي [الميزة الفريدة] لـ [الجمهور]، والذي ينتج عنه [المنفعة الكبرى].</p>
+                <textarea rows="2" placeholder="الإجابة: نحن العلامة التجارية الوحيدة التي تستخدم الذكاء الاصطناعي لتقليل هدر الطعام في المطابخ المحلية، مما يقلل التكاليف البيئية والمادية للمطعم." class="textarea-field"></textarea>
+                <input type="text" placeholder="فئة البراند (في أي فئة يتنافس؟ مثال: حلول تقليل الهدر، وليس برامج محاسبة)" class="input-field-sm mt-3">
+            </div>
+        </section>
+
+        <!-- الفصل الثالث: أساس البراند شخصيته -->
+        <section class="content-container" data-section-title="الفصل الثالث: أساس البراند شخصيته (الـ 'كيف؟')">
+            <h3 class="section-title">الفصل الثالث: أساس البراند شخصيته (الـ "كيف؟")</h3>
+            <!-- المهمة 3.1: تحديد شخصية البراند -->
+            <div class="task-box">
+                <h4 class="task-title">3.1 تحديد شخصية البراند</h4>
+                <p class="task-description">**الهدف:** تحديد السمات الإنسانية والنموذج الأصلي (Archetype) للبراند، لتوجيه أسلوب التواصل.</p>
+                <input type="text" placeholder="النموذج الأصلي للبراند (مثال: الحكيم، البطل، المبتكر)" class="input-field-sm">
+                <p class="task-description mt-3">الصفات الشخصية الثلاثة الرئيسية (التي ستظهر في كل تواصل):</p>
+                <div class="space-y-2">
+                    <input type="text" placeholder="الصفة الشخصية 1 (مثال: ودود ويسهل الوصول إليه)" class="input-field-sm">
+                    <input type="text" placeholder="الصفة الشخصية 2 (مثال: موثوق وقائم على البيانات)" class="input-field-sm">
+                    <input type="text" placeholder="الصفة الشخصية 3 (مثال: جريء ومحب للتغيير)" class="input-field-sm">
+                </div>
+            </div>
+        </section>
+
+        <!-- الفصل الرابع: اصنع هوية للبراند -->
+        <section class="content-container" data-section-title="الفصل الرابع: اصنع هوية للبراند (الـ 'ماذا يبدو؟')">
+            <h3 class="section-title">الفصل الرابع: اصنع هوية للبراند (الـ "ماذا يبدو؟")</h3>
+            
+            <!-- المهمة 4.1: ألوان البراند (Brand Colors) -->
+            <div class="task-box">
+                <h4 class="task-title">4.1 ألوان البراند (Brand Colors)</h4>
+                <p class="task-description">**الهدف:** توثيق الألوان بدقة (Hex Code) والمشاعر التي تعكسها.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="col-span-1">
+                        <label class="text-gray-600 font-medium text-sm mb-1 block">اللون الأساسي (Primary)</label>
+                        <input type="text" placeholder="#1D4ED8 (كود اللون)" class="input-field-sm">
+                        <input type="text" placeholder="المشاعر/الدلالة (مثال: الثقة، الجدية)" class="input-field-sm mt-2">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="text-gray-600 font-medium text-sm mb-1 block">اللون الثانوي (Secondary)</label>
+                        <input type="text" placeholder="#F59E0B (كود اللون)" class="input-field-sm">
+                        <input type="text" placeholder="المشاعر/الدلالة (مثال: الطاقة، التفاؤل)" class="input-field-sm mt-2">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="text-gray-600 font-medium text-sm mb-1 block">خطوط البراند (Typography)</label>
+                        <input type="text" placeholder="اسم الخط الرئيسي (مثال: Noto Sans Arabic)" class="input-field-sm">
+                        <input type="text" placeholder="دلالة الخط (مثال: عصري، تقليدي)" class="input-field-sm mt-2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- المهمة 4.2: صوت البراند (Brand Voice) - مع حقول التبرير -->
+            <div class="task-box">
+                <h4 class="task-title">4.2 صوت البراند (Brand Voice)</h4>
+                <p class="task-description">**الهدف:** توثيق طريقة حديث البراند في المحتوى والتسويق.</p>
+                
+                <div class="space-y-4 pt-2">
+                    <!-- النبرة -->
+                    <div>
+                        <label class="text-gray-700 font-medium mb-1 block">النبرة (Tone):</label>
+                        <input type="text" placeholder="الإجابة (مثال: احترافي، غير رسمي، متعاطف)" class="input-field-sm" data-label="النبرة">
+                        <label class="text-gray-500 font-normal text-sm mt-2 block">السبب الاستراتيجي للاختيار (لماذا هذه النبرة؟):</label>
+                        <textarea rows="1" placeholder="مثال: لكي نبني الثقة مع العميل في قطاع حساس يتطلب الجدية." class="textarea-field-sm mt-1" data-label="سبب النبرة"></textarea>
+                    </div>
+
+                    <!-- المفردات -->
+                    <div>
+                        <label class="text-gray-700 font-medium mb-1 block">المفردات (Unique Vocabulary):</label>
+                        <input type="text" placeholder="الإجابة (مثال: 'أصدقائنا المبتكرون'، 'رحلة التميز')" class="input-field-sm" data-label="المفردات">
+                        <label class="text-gray-500 font-normal text-sm mt-2 block">الهدف من هذه المفردات (ماذا تخدم؟):</label>
+                        <textarea rows="1" placeholder="مثال: لترسيخ شخصية 'المبتكر' وتفريقنا عن المنافسين التقليديين." class="textarea-field-sm mt-1" data-label="هدف المفردات"></textarea>
+                    </div>
+
+                    <!-- الأسلوب -->
+                    <div>
+                        <label class="text-gray-700 font-medium mb-1 block">الأسلوب (Style):</label>
+                        <input type="text" placeholder="الإجابة (مثال: سردي عاطفي، إخباري قائم على البيانات)" class="input-field-sm" data-label="الأسلوب">
+                        <label class="text-gray-500 font-normal text-sm mt-2 block">التأثير المطلوب من هذا الأسلوب (ماذا يشعر به العميل؟):</label>
+                        <textarea rows="1" placeholder="مثال: نريد أن يشعر العميل بالارتباط العاطفي من خلال قصص نجاح العملاء لا مجرد الإحصائيات." class="textarea-field-sm mt-1" data-label="التأثير المطلوب"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الفصل الخامس: عندما يتكلم البراند -->
+        <section class="content-container" data-section-title="الفصل الخامس: عندما يتكلم البراند (الـ 'ماذا يقول؟')">
+            <h3 class="section-title">الفصل الخامس: عندما يتكلم البراند (الـ "ماذا يقول؟")</h3>
+
+            <!-- المهمة 5.1: اسم البراند (Brand Name) -->
+            <div class="task-box">
+                <h4 class="task-title">5.1 اسم البراند (Brand Name)</h4>
+                <p class="task-description">**الهدف:** توضيح سبب اختيار الاسم وكيف يخدم الموقع الذهني.</p>
+                <input type="text" placeholder="الاسم (النهائي والموثق)" class="input-field-sm">
+                <textarea rows="2" placeholder="سبب اختياره (هل يصف المنتج، هل هو فريد، هل يثير شعوراً معيناً؟)" class="textarea-field mt-3"></textarea>
+            </div>
+
+            <!-- المهمة 5.3: شعار البراند (Brand Slogan/Tagline) -->
+            <div class="task-box">
+                <h4 class="task-title">5.3 شعار البراند (Brand Slogan/Tagline)</h4>
+                <p class="task-description">**الهدف:** صياغة جملة قصيرة تلخص جوهر البراند والمنفعة الكبرى للعميل.</p>
+                <input type="text" placeholder="الشعار (جملة قصيرة ومؤثرة)" class="input-field-sm">
+                <input type="text" placeholder="مدى ترسيخه للموقع الذهني (هل يوصل الـ UVP؟)" class="input-field-sm mt-3">
+            </div>
+
+            <!-- المهمة 5.2: قصص البراند (Brand Stories) -->
+            <div class="task-box">
+                <h4 class="task-title">5.2 قصص البراند (Brand Stories)</h4>
+                <p class="task-description">**الهدف:** توثيق القصة الرئيسية (قصة التأسيس) التي سيتم استخدامها للتواصل العاطفي.</p>
+                <textarea rows="4" placeholder="الإجابة: (لماذا بدأت/ما المشكلة التي ألهمتك؟)" class="textarea-field"></textarea>
+            </div>
+        </section>
+
+        <!-- الفصل السادس: انشر البراند.. بشكل صحيح -->
+        <section class="content-container" data-section-title="الفصل السادس: انشر البراند.. بشكل صحيح">
+            <h3 class="section-title">الفصل السادس: انشر البراند.. بشكل صحيح</h3>
+
+            <!-- المهمة 6.1: تجربة البراند (Brand Experience) -->
+            <div class="task-box">
+                <h4 class="task-title">6.1 تجربة البراند (Brand Experience)</h4>
+                <p class="task-description">**الهدف:** تحديد وتصميم نقاط التماس الحرجة لضمان التزامها بالقيم.</p>
+                <input type="text" placeholder="نقطة التماس الأكثر أهمية (مثال: زيارة المتجر، خدمة ما بعد البيع)" class="input-field-sm">
+                <p class="task-description mt-3">الخطوات لضمان تجربة متسقة مع القيم (كيف نطبق قيمة 'الشفافية' في نقطة التماس هذه؟):</p>
+                <input type="text" placeholder="1. الخطوة الأولى" class="input-field-sm">
+                <input type="text" placeholder="2. الخطوة الثانية" class="input-field-sm mt-2">
+            </div>
+        </section>
+
+    </div>
+
+    <!-- تذييل الصفحة مع التوثيق -->
+    <footer class="text-center py-6 text-gray-400 text-sm mt-10">
+        <p>وثيقة عمل مقدمة من مولّد الهوية التجارية © 2024</p>
+        <p class="text-gray-500 font-medium mt-1">إعداد واجتهاد: بثلجة عبد الفتاح</p>
+        <p class="text-xs mt-1">جميع البيانات محفوظة محلياً على جهازك.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // *** تحسين فئات Tailwind الديناميكية للمظهر الاحترافي المتجاوب ***
+            
+            const inputClass = "w-full p-3 border-2 border-gray-200 rounded-xl bg-white text-gray-800 transition duration-150 text-right focus:ring-2 focus:ring-indigo-400 focus:border-transparent shadow-inner-sm hover:border-gray-300";
+            const textareaClass = "w-full p-3 border-2 border-gray-200 rounded-xl bg-white text-gray-800 transition duration-150 text-right focus:ring-2 focus:ring-indigo-400 focus:border-transparent shadow-inner-sm hover:border-gray-300";
+            
+            // خط فاصل بسيط وأنيق
+            const sectionTitleClass = "text-2xl md:text-3xl font-extrabold text-gray-900 mb-6 md:mb-8 pb-3 border-b border-gray-200";
+            
+            // الخلفية بيضاء، الظل الخفيف من الخارج يفصلها عن خلفية الصفحة الفاتحة
+            const taskBoxClass = "bg-white p-6 rounded-2xl border border-gray-100 shadow-lg hover:shadow-xl transition duration-300 mb-8";
+            
+            // شريط جانبي بلون احترافي (Indigo)
+            const taskTitleClass = "text-xl font-bold text-gray-900 mb-3 border-r-4 border-indigo-500 pr-3";
+            const taskDescriptionClass = "text-gray-500 mb-4 text-sm leading-relaxed";
+            
+            const inputFieldSmClass = "w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800 text-right focus:ring-1 focus:ring-indigo-400 shadow-inner-sm";
+            const textareaFieldSmClass = "w-full p-2 border border-gray-200 rounded-xl bg-white text-gray-800 text-right text-sm focus:ring-1 focus:ring-indigo-400 shadow-inner-sm";
+
+            // تطبيق الفئات الجديدة
+            document.querySelectorAll('.input-field').forEach(el => el.className = inputClass);
+            document.querySelectorAll('.textarea-field').forEach(el => el.className = textareaClass);
+            document.querySelectorAll('.section-title').forEach(el => el.className = sectionTitleClass);
+            document.querySelectorAll('.task-box').forEach(el => el.className = taskBoxClass);
+            document.querySelectorAll('.task-title').forEach(el => el.className = taskTitleClass);
+            document.querySelectorAll('.task-description').forEach(el => el.className = taskDescriptionClass);
+            document.querySelectorAll('.input-field-sm').forEach(el => el.className = inputFieldSmClass);
+            document.querySelectorAll('.textarea-field-sm').forEach(el => el.className = textareaFieldSmClass);
+
+             // حفظ البيانات في localStorage
+            const formElements = document.querySelectorAll('#pdf-content input, #pdf-content textarea');
+            formElements.forEach((element, index) => {
+                // استخدام سمة data-key لتجنب الاعتماد على id/name في حالة التغييرات
+                const storageKey = element.getAttribute('data-key') || element.id || element.name || `brand_workbook_input_${index}`;
+                
+                // إضافة data-key لضمان ثبات المفتاح حتى لو لم يكن هناك id
+                if (!element.hasAttribute('data-key')) {
+                    element.setAttribute('data-key', storageKey);
+                }
+
+                const savedValue = localStorage.getItem(storageKey);
+                if (savedValue) {
+                    // معالجة خاصة لحقل التاريخ لضمان عرض القيمة بشكل صحيح
+                    if (element.type === 'date' && savedValue) {
+                         element.value = savedValue;
+                    } else {
+                        element.value = savedValue;
+                    }
+                }
+                
+                element.addEventListener('input', () => {
+                    localStorage.setItem(storageKey, element.value);
+                });
+            });
+
+
+            const downloadTextButton = document.getElementById('downloadText');
+
+
+            // *** الدالة الوحيدة لتصدير البيانات كنص بسيط ***
+            function exportAsText() {
+                let textContent = "========================================================\n";
+                textContent += "=== وثيقة توثيق الهوية التجارية - مُصدرة كنص بسيط ===\n";
+                textContent += "========================================================\n\n";
+
+                const sections = document.querySelectorAll('.content-container');
+                
+                // 1. استخلاص معلومات الرأس
+                const authorElement = document.querySelector('header p.font-medium');
+                if (authorElement) {
+                    textContent += `المُعد: ${authorElement.textContent.replace('إعداد واجتهاد: ', '').trim()}\n`;
+                    textContent += `\n--------------------------------------------------------\n`;
+                }
+
+                // 2. استخلاص بيانات الأقسام (Section by Section)
+                sections.forEach(section => {
+                    const sectionTitle = section.querySelector('h3.section-title')?.textContent.trim() || section.getAttribute('data-section-title') || 'قسم غير مُعنون';
+                    textContent += `\n\n================================\n`;
+                    textContent += `== ${sectionTitle} ==\n`;
+                    textContent += `================================\n\n`;
+
+                    // استخلاص الحقول المباشرة في القسم (مثل معلومات المشروع الأساسية)
+                    section.querySelectorAll('.flex.flex-col').forEach(div => {
+                        const label = div.querySelector('label')?.textContent.trim().replace(/\d+\./, '').trim();
+                        const input = div.querySelector('input, textarea');
+                        if (label && input) {
+                            const value = input.value.trim() || `[${input.placeholder.replace('مثال:', '').trim()}]`;
+                            textContent += `| ${label}: ${value}\n`;
+                        }
+                    });
+
+                    // استخلاص المهام (Task Boxes)
+                    section.querySelectorAll('.task-box').forEach(taskBox => {
+                        const taskTitle = taskBox.querySelector('.task-title')?.textContent.trim();
+                        textContent += `\n\n--- ${taskTitle} ---\n`;
+                        
+                        // جمع كل الحقول في Task Box واحد
+                        const allFields = taskBox.querySelectorAll('.textarea-field, .input-field, .input-field-sm, .textarea-field-sm');
+                        
+                        allFields.forEach(field => {
+                            let label = '';
+                            let inputValue = field.value.trim() || `[${field.placeholder.replace('مثال:', '').trim()}]`;
+
+                            // 1. محاولة استخلاص الـ label الصريح (للحقول الصغيرة)
+                            let explicitLabel = field.previousElementSibling;
+                            if (explicitLabel && explicitLabel.tagName === 'LABEL' && explicitLabel.textContent.includes(':')) {
+                                label = explicitLabel.textContent.trim().replace(':', '').replace(/\*\*/g, '').trim();
+                            } 
+                            // 2. استخدام Placeholder/التوصيف للحقول الرئيسية
+                            else if (field.classList.contains('textarea-field') || field.classList.contains('input-field')) {
+                                // استخلاص توصيف المهمة كـ Label
+                                const taskDescriptionEl = taskBox.querySelector('.task-description');
+                                label = taskDescriptionEl ? taskDescriptionEl.textContent.split('.').slice(0, 2).join('.').trim() : 'الإجابة';
+                                label = label.split('الصيغة:')[0].split('الهدف:')[0].trim();
+                                label = 'الإجابة: ' + label;
+                            }
+                            // 3. استخدام Placeholder للحقول المتكررة (قيم، ألوان، مفردات)
+                            else {
+                                // استخدام محتوى الـ placeholder كعنوان للحقل
+                                label = field.placeholder.split('(')[0].trim().replace(/\d+\./, '').trim();
+                                if (label === 'الإجابة') {
+                                    // للحقول التي لديها data-label صريح (مثل النبرة والأسلوب)
+                                    label = field.getAttribute('data-label') || label;
+                                }
+                            }
+
+                            // تنظيف وإضافة السطر
+                            if (label && inputValue) {
+                                textContent += `| ${label.trim()} : ${inputValue}\n`;
+                            }
+                        });
+                        textContent += `\n`; // فاصل بين المهام
+                    });
+                });
+                
+                // إضافة التذييل
+                textContent += `\n\n========================================================\n`;
+                textContent += `التذييل: وثيقة عمل مقدمة من مولّد الهوية التجارية © 2024\n`;
+                textContent += `========================================================\n`;
+
+                // إنشاء ملف النص وتنزيله
+                const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'وثيقة_هوية_براند_' + new Date().toISOString().slice(0, 10) + '.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            // ربط الدالة بالزر الأخضر الوحيد
+            downloadTextButton.addEventListener('click', exportAsText);
+        });
+    </script>
+</body>
+</html>
